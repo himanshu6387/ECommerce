@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/node_modules/bootstrap-icons/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg bg-white shadow-lg position-sticky top-0 z-3">
+        <div class="container-fluid ">
+            <a href="" class="navbar-brand fw-bold fs-3">E-COM</a>
+
+            <button class="navbar-toggler bg-white ms-auto" type="button" data-bs-toggle="collapse"
+                data-bs-target="#NavbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="NavbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a href="index.html" class="nav-link text-dark fs-5">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="Contact.html" class="nav-link text-dark fs-5">Contact</a>
+                    </li>
+                    <li class="nav-item">
+                        <button class="btn btn-primary btn-sm mt-2 position-relative " id="cartButton">
+                            Cart
+                            <span
+                                class="badge position-absolute top-0 start-100 bg-danger rounded-pill translate-middle"
+                                id="cartBadge">0</span>
+                        </button>
+                    </li>
+
+                </ul>
+
+                <div class="d-flex ms-auto gap-4" id="auth-Buttons">
+                    <a href="Login.html" class="btn btn-outline-primary">Login</a>
+                    <a href="Register.htm" class="btn btn-primary">Register</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Cart Items -->
+    <div class="container mt-5">
+        <h2>Your Cart</h2>
+        <table class="table table-bordered text-center" id="cartTable">
+            <thead>
+                <tr>
+                    <th>Image</th>
+                    <th>Product</th>
+                    <th>Price</th>
+                    <th>Quantity</th>
+                    <th>Total</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody id="cartItems">
+
+            </tbody>
+        </table>
+        <div class="text-end">
+            <h3>Total: $<span id="cart-total">0</span></h3>
+        </div>
+        <div class="text-end">
+            <button class="btn btn-primary" onclick="checkOut()">CheckOut</button>
+        </div>
+        <div class="text-start">
+            <button class="btn btn-primary" id="BackHome">Back To Home Page</button>
+        </div>
+    </div>
+
+    <script>
+        let cart = JSON.parse(localStorage.getItem('cart')) || []
+
+        function displayCartItems() {
+            const cartItemContainer = document.getElementById('cartItems');
+            cartItemContainer.textContent = ''
+            let total = 0;
+
+            cart.forEach(item => {
+                total += item.price * item.quantity;
+
+                const cartRow = document.createElement('tr');
+                cartRow.innerHTML =
+                    `
+                <td><img src="${item.thumbnail}" alt="Not Available" style="height:80px;object-fit:contain;"></td>
+                <td>${item.title}</td>
+                <td>$ ${item.price}</td>
+                <td>
+                  <button class="btn btn-secondary" onclick="changeQuantity(${item.id},-1)">-</button>
+                  ${item.quantity}
+                  <button class="btn btn-secondary" onclick="changeQuantity(${item.id},1)">+</button>    
+                </td>
+                <td>${(item.price * item.quantity).toFixed(2)}</td>
+                <td>
+                    <button class="btn btn-danger" onclick="removeFromCart(${item.id})"><span class="bi bi-trash"></span></button>
+                </td>
+
+                `
+                    ;
+                cartItemContainer.appendChild(cartRow);
+            })
+
+            document.getElementById('cart-total').textContent = total.toFixed(2);
+            updateCartBadge();
+        }
+
+        //Quantity Change..
+        function changeQuantity(productId, change) {
+            const cartItem = cart.find(item => item.id === productId);
+            if (cartItem) {
+                cartItem.quantity = Math.max(1, cartItem.quantity + change);
+            }
+            localStorage.setItem('cart', JSON.stringify(cart));
+            displayCartItems()
+        }
+
+        //Update Cart Count
+        function updateCartBadge() {
+            const cartBadge = document.getElementById("cartBadge");
+            const totalItems = cart.reduce((acc, item) => acc + item.quantity, 0);
+            cartBadge.textContent = totalItems;
+        }
+
+        //CheckOut Function
+        function checkOut() {
+            alert('Wait!! Im Proceeding for CheckOut...')
+        }
+
+        //Remove From Cart
+        function removeFromCart(productId){
+            cart = cart.filter(item => item.id !== productId);
+            localStorage.setItem('cart',JSON.stringify(cart));
+            displayCartItems();
+        }
+
+        //Redirect to Home Page
+        document.getElementById("BackHome").addEventListener('click',()=>{
+            window.location.href = 'index.html'
+        })
+
+
+        displayCartItems();
+    </script>
+    <script src="/js/auth.js"></script>
+    <script src="/node_modules/bootstrap/dist/js/bootstrap.bundle.js"></script>
+</body>
+
+</html>

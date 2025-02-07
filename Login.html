@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/node_modules/bootstrap-icons/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg bg-white shadow-lg">
+        <div class="container-fluid">
+            <a href="" class="navbar-brand fw-bold fs-3">E-COM</a>
+
+            <button class="navbar-toggler bg-white ms-auto" type="button" data-bs-toggle="collapse"
+                data-bs-target="#NavbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="NavbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a href="index.html" class="nav-link text-dark fs-5">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="Contact.html" class="nav-link text-dark fs-5">Contact</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="" class="nav-link text-dark fs-5">Cart</a>
+                    </li>
+                </ul>
+
+                <div class="d-flex ms-auto gap-4" id="auth-Buttons">
+                    <a href="Login.html" class="btn btn-outline-primary">Login</a>
+                    <a href="Register.htm" class="btn btn-primary">Register</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+
+    <!-- Register Form -->
+    <div class="container col-md-5  shadow-lg ms-auto mt-5 p-4 rounded-4" >
+        <h2 class="text-center fw-bold text-decoration-underline">Login</h2>
+        <form id="login-form">
+            <div class="form-group mt-2" >
+                <label for="login-email" class="form-label">Email</label>
+                <input type="email" name="" id="login-email" class="form-control" placeholder="Enter Email...">
+            </div>
+            <div class="form-group mt-2">
+                <label for="login-password" class="form-label">Password</label>
+                <input type="password" name="" id="login-password" class="form-control" placeholder="Enter Password">
+            </div>
+            <button type="submit" class="btn btn-primary mt-3 w-100" onclick="handleLogin()">Login</button>
+        </form>
+    </div>
+
+    <script>
+        const loggedInUser = localStorage.getItem("loggedInUser");
+        if(loggedInUser){
+            window.location.href = 'index.html'
+        }
+    </script>
+    <script src="/js/auth.js"></script>
+    
+    <script src="/node_modules/bootstrap/dist/js/bootstrap.bundle.js"></script>
+</body>
+</html>
